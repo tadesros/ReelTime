@@ -2,7 +2,7 @@ name: Deploy Blazor to GitHub Pages
 
 on:
   push:
-    branches: [ main ]      # change to master if that's your default branch
+    branches: [ master ]      # change to master if that's your default branch
   workflow_dispatch:
 
 permissions:
