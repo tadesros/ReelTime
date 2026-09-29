@@ -8,6 +8,7 @@ This can be turned into a Template Package (`.nupkg`) for Visual Studio, or you 
  
 New information. 
 
+This is a test of GIT
 
 ---
 
