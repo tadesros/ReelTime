@@ -23,9 +23,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <!-- Custom CSS-->
+    <link rel="stylesheet" href="css/themes.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link href="BlazorLayout.styles.css" rel="stylesheet" />
-     
+
     <!--Favicon-->
     <link rel="icon" type="image/png" href="favicon.png" />
 
@@ -34,9 +35,8 @@
     <script type="importmap"></script>
 </head>
 
-<body>
+<body data-cf-theme="green">
     <!-- This is the App component where get's injected'-->
-
     <!-- Defaults to Spinning-->
     <div id="app">
         <svg class="loading-progress">
@@ -52,7 +52,24 @@
         <a href="." class="reload">Reload</a>
         <span class="dismiss">🗙</span>
     </div>
+
+    <!-- Bootstrap JS bundle (includes Popper) -->
+    <script src="lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        window.setTheme = (theme) => {
+            const el = document.querySelector('[data-cf-theme]');
+            if (!el) {
+                console.error('No element found with data-cf-theme');
+                return;
+            }
+
+            el.setAttribute('data-cf-theme', theme);
+        };
+    </script>
+
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+
 </body>
 
 </html>

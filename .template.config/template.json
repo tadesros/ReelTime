@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Pangea Made",
+  "name": "Blazor WebAssembly With Branded Layout (Pangea Made)",
+  "description": "Blazor WebAssembly With Branded Layout",
+  "identity": "PangeaMade.BlazorLayout",
+  "shortName": "pangealayout",
+  "classifications": [ "Blazor", "Web", "WebAssembly" ],
+  "sourceName": "BlazorLayout",
+  "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}
