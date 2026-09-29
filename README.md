@@ -5,6 +5,9 @@ A starter template for **Blazor WebAssembly** apps on **.NET 10**. It runs entir
 The project and root namespace are named `BlazorLayout`.
 
 This can be turned into a Template Package (`.nupkg`) for Visual Studio, or you can just clone it and rename the project to start a new app.
+ 
+New information. 
+
 
 ---
 
