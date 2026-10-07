@@ -1,16 +1,15 @@
 /*you canvas input any value not cf*/
-:root{
+:root {
     --cf-title-font: 'Bebas Neue', sans-serif;
     --cf-body-font: 'Montserrat', sans-serif;
-    
     --cf-dark-color: #212121;
     --cf-light-color: #deeefb;
     --cf-font-size: 1.25rem; /* new global font size */
 
     --cf-title-color: var(--cf-dark-color);
-  
-
-
+    --cf-btn-homebg: hsl(38, 71%, 40%);
+    --cf-btn-homehover: hsl(38, 75%, 52%);
+    --cf-btn-active: hsl(42, 95%, 58%);
 }
 /*:root{
     
@@ -42,8 +41,25 @@ h1,h2,h3,h4,h5,h6 {
 }
 
 
-#app{
-    height:100%;
+.btn-home {
+    --bs-btn-bg: var(--cf-btn-homebg);
+    --bs-btn-border-color: var(--cf-btn-homebg);
+    --bs-btn-hover-bg: var(--cf-btn-homehover);
+    --bs-btn-hover-border-color: var(--cf-btn-homehover);
+    --bs-btn-active-bg: var(--cf-btn-active);
+    --bs-btn-active-border-color: var(--cf-btn-active);
+    --bs-btn-disabled-bg: var(--cf-btn-homebg);
+    --bs-btn-disabled-border-color: var(--cf-btn-homebg);
+    --bs-btn-hover-border-color: var(--cf-dark-color);
+     color: var(--cf-dark-color);
+}
+
+
+
+
+
+#app {
+    height: 100%;
 }
 
 

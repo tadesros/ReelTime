@@ -2,12 +2,12 @@
 
 A starter template for **Blazor WebAssembly** apps on **.NET 10**. It runs entirely in the browser (no server-side rendering) and comes with a sidebar layout, a blank top-nav layout to build on, Bootstrap 5, Bootstrap Icons, Devicons, Google Fonts, and a set of CSS variables for theming.
 
-The project and root namespace are named `BlazorLayout`.
+The project and root namespace are named `ReelTime`.
 
 This can be turned into a Template Package (`.nupkg`) for Visual Studio, or you can just clone it and rename the project to start a new app.
  
 New information. 
-
+ss
 This is a test of GIT
 
 ---
@@ -39,7 +39,7 @@ dotnet publish -c Release
 ### Starting a new project from this template
 
 1. Click **Use this template** on GitHub (or clone and re-init git).
-2. Optionally rename `BlazorLayout.csproj`, `BlazorLayout.slnx`, and the `BlazorLayout` namespace used in `Program.cs` and `_Imports.razor`. If you rename the project, update the `BlazorLayout.styles.css` link in `wwwroot/index.html` to match the new project name.
+2. Optionally rename `ReelTime.csproj`, `ReelTime.slnx`, and the `ReelTime` namespace used in `Program.cs` and `_Imports.razor`. If you rename the project, update the `ReelTime.styles.css` link in `wwwroot/index.html` to match the new project name.
 3. Update the page `<title>` in `wwwroot/index.html` and the brand text in `Layout/NavMenu.razor`.
 4. Change the theme variables at the top of `wwwroot/css/app.css`.
 
@@ -49,8 +49,8 @@ dotnet publish -c Release
 
 ```
 BlazorTemplate/
-├── BlazorLayout.slnx              # Solution file (new XML .slnx format)
-├── BlazorLayout.csproj            # Project file – Blazor WebAssembly SDK, net10.0
+├── ReelTime.slnx              # Solution file (new XML .slnx format)
+├── ReelTime.csproj            # Project file – Blazor WebAssembly SDK, net10.0
 ├── Program.cs                     # App entry point – builds and runs the WASM host
 ├── App.razor                      # Root component – the router
 ├── _Imports.razor                 # Global @using directives for all .razor files
@@ -88,7 +88,7 @@ BlazorTemplate/
 
 When a browser requests the site, it gets the static **`index.html`**. That page:
 
-- Loads stylesheets: local Bootstrap, Bootstrap Icons and Devicons (CDN), Google Fonts (Bebas Neue and Montserrat), `css/app.css`, and `BlazorLayout.styles.css` (the bundle of every component's scoped `.razor.css` file, generated at build time).
+- Loads stylesheets: local Bootstrap, Bootstrap Icons and Devicons (CDN), Google Fonts (Bebas Neue and Montserrat), `css/app.css`, and `ReelTime.styles.css` (the bundle of every component's scoped `.razor.css` file, generated at build time).
 - Contains a `<div id="app">` holding a loading spinner. It shows while the .NET runtime downloads.
 - Contains a hidden `#blazor-error-ui` banner that Blazor reveals if an unhandled exception occurs.
 - Loads `_framework/blazor.webassembly.js`, which downloads the .NET runtime and your compiled app into the browser as WebAssembly.
@@ -184,7 +184,7 @@ The template uses three kinds of styling:
    ```
 
    Below that, a `#region` holds Blazor's default styles: the focus outline, form validation colors, the error banner, and the loading spinner. The spinner reads `--blazor-load-percentage`, which the runtime updates as it downloads.
-3. **Scoped CSS** in files like `MainLayout.razor.css` and `NavMenu.razor.css`. These styles apply only to their matching component. At build time Blazor rewrites them with unique attributes and bundles them into `BlazorLayout.styles.css`. To style a single component without affecting anything else, add a `MyComponent.razor.css` file next to it.
+3. **Scoped CSS** in files like `MainLayout.razor.css` and `NavMenu.razor.css`. These styles apply only to their matching component. At build time Blazor rewrites them with unique attributes and bundles them into `ReelTime.styles.css`. To style a single component without affecting anything else, add a `MyComponent.razor.css` file next to it.
 
 ### 6. `_Imports.razor`
 
@@ -196,7 +196,7 @@ This file's `@using` directives apply to every `.razor` file in its folder and s
 
 | File | What to change |
 |---|---|
-| `BlazorLayout.csproj` | Target framework, NuGet packages |
+| `ReelTime.csproj` | Target framework, NuGet packages |
 | `Properties/launchSettings.json` | Local ports (`5262` / `7170`) and the environment name |
 | `wwwroot/index.html` | Page title, fonts, CDN links, favicon, `<base href>` (change it when hosting under a sub-path, e.g. `/my-app/`) |
 | `wwwroot/css/app.css` | Theme variables and global styles |

@@ -1,0 +1,48 @@
+﻿@page "/" 
+@inject IJSRuntime JS 
+@layout HomeLayout
+
+
+
+<PageTitle>ReelTime</PageTitle>
+
+<!-- Page Background -->
+<div class="h-100 d-flex justify-content-center">
+    <div class="row row-cols-1 row-cols-xl-2 container-xxl h-100">
+        <div class="col d-flex flex-column justify-content-xl-center order-last order-xl-first">
+            <div class="title">ReelTime</div>
+            <div class="subtitle">
+                Now Playing is an app using data provided by
+                <a href="https://www.themoviedb.org/" class="link-warning">The Movie DB</a> API.
+                This app allows you to browse movies that are now playing in theatres,
+                movies that are currently popular with TMDB users, save a list of your
+                favorite movies, or search for movies by title.
+            </div>
+  
+
+            <div class="mt-3">
+                <h3>Try it Out Now!</h3>
+                <div class="hstack gap-2">
+                    <a href="now-playing" class="btn btn-home">Now Playing</a>
+                    <a href="popular" class="btn btn-home">Popular</a>
+                    <a href="favorites" class="btn btn-home">Favorites</a>
+                 </div>
+            </div>
+
+
+            <div class="mt-3">
+                Built with pride using:
+                <div class="hstack my-2">
+                    <div><i class="devicons devicon-csharp-plain  me-1"></i></div>
+                    <div><i class="devicons devicon-bootstrap-plain me-1"></i></div>
+                    <div><i class="devicons devicon-blazor-original me-1"></i></div>
+                    <div><i class="devicons devicon-html5-plain me-1"></i></div>
+                    <div><i class="devicons devicon-css3-plain  me-1"></i></div>
+                </div>
+            </div>
+        </div>
+        <div class="col d-flex flex-column justify-content-center">
+            <img src="images/reelTimeLogo.png" class="img-fluid" />
+        </div>
+    </div>
+</div>

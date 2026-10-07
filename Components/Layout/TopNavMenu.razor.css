@@ -1,0 +1,19 @@
+﻿
+.navStyle {
+    background-color: var(--cf-theme-850);
+}
+
+/*Overide bootstrap variables*/
+.nav-item {
+  --bs-navbar-hover-color: var(--cf-theme-400);   
+  --bs-nav-link-hover-color: rgb(0, 255, 255);     
+}
+
+.dropdown-menu {
+   background-color: var(--cf-theme-900);
+}
+
+.dropdown:has(.nav-link.active) .dropdown-toggle {
+    color: var(--bs-navbar-active-color); 
+    /* Changes color of dropdown toggle when an item is active */
+}

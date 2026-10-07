@@ -25,10 +25,10 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Publish
-        run: dotnet publish BlazorLayout.csproj -c Release -o release
+        run: dotnet publish ReelTime.csproj -c Release -o release
 
-      - name: Set base href for /BlazorLayout/
-        run: sed -i 's|<base href="/"|<base href="/BlazorLayout/"|' release/wwwroot/index.html
+      - name: Set base href for /ReelTime/
+        run: sed -i 's|<base href="/"|<base href="/ReelTime/"|' release/wwwroot/index.html
 
       - name: SPA fallback (deep links like /counter)
         run: cp release/wwwroot/index.html release/wwwroot/404.html
