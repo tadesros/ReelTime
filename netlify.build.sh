@@ -1,4 +1,8 @@
-﻿#!/usr/bin/env bash
+﻿export DOTNET_ROOT="$HOME/.dotnet"
+export PATH="$HOME/.dotnet:$PATH"
+
+
+#!/usr/bin/env bash
 set -e
 
 # Change into a temporary directory so we can download + install .NET
