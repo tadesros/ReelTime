@@ -1,23 +1,63 @@
 ﻿@page "/favorites"
+@inject FavoritesService FavoritesService
 
 <PageTitle>Favorite Movies</PageTitle>
 
-
 <div class="container-xxl py-3">
     <h1>
-        <i class="bi bi-heard-fill text-danger"></i>
-          Favorite Movies
+        <i class="bi bi-heart-fill text-danger"></i>
+        Favorite Movies
     </h1>
-
     <p class="lead italic">
-       Movies that you have added to your favorites. 
+        Movies that you have added to your favorites
     </p>
-
-
+    @if (favoriteMovies is null)
+    {
+        <div class="d-flex justify-content-center align-items-center">
+            @if (isLoading)
+            {
+                <h2 class="text-muted">Loading favorite movies...</h2>
+            }
+            else
+            {
+                <h2 class="text-muted">
+                    Failed to load favorite movies
+                </h2>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-lg-4">
+            @foreach (var movie in favoriteMovies)
+            {
+                <div class="col">
+                    <MovieCard Movie="movie" OnChange="OnParametersSetAsync" />
+                </div>
+            }
+        </div>
+    }
 </div>
 
-
-
 @code {
+    List<Movie> favoriteMovies = new List<Movie>();
+    bool isLoading = true;
 
+    protected override async Task OnParametersSetAsync()
+    {
+        // load the favorites from local storage service
+        try
+        {
+            isLoading = true;
+            favoriteMovies = await FavoritesService.GetFavorites();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
 }

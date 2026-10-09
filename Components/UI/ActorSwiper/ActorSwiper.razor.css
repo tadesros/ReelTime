@@ -1,0 +1,50 @@
+﻿.swiper-container {
+    position: relative;
+}
+
+    .swiper-container button {
+        position: absolute;
+        color: var(--cf-theme-800);
+        background: var(--cf-light-color);
+        height: 3rem;
+        width: 3rem;
+        font-size: 1.5rem;
+        border: solid 1px var(--cf-theme-300);
+        box-shadow: 1px 2px 4px var(--cf-theme-900);
+        border-radius: 50%;
+        top: calc(50% - 2rem);
+    }
+
+    .swiper-container .nav-btn-prev {
+        left: 1rem;
+    }
+
+    .swiper-container .nav-btn-next {
+        right: 1rem;
+    }
+
+.swiper-content {
+    padding: .5rem 4rem;
+    scroll-behavior: smooth;
+}
+
+    .swiper-content::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .swiper-content::-webkit-scrollbar-track {
+        background-color: var(--cf-gray-300);
+        border-radius: 5px;
+    }
+
+    .swiper-content::-webkit-scrollbar-thumb {
+        background: var(--cf-theme-800);
+        border-radius: 5px;
+    }
+
+@supports not selector(::-webkit-scrollbar) {
+    .swiper-content {
+        scrollbar-color: var(--cf-theme-800) var(--cf-gray-300);
+        scrollbar-width: thin;
+    }
+}

@@ -1,4 +1,5 @@
 ﻿@page "/now-playing"
+@inject TMDBService TMDBService
 
 
 <PageTitle>Now Playing</PageTitle>
@@ -6,25 +7,99 @@
 <div class="container-xxl py-3">
 
     <h1>
-        <i class="bi bi-film text-primary"></i> Now Playing 
+        <i class="bi bi-film text-primary"></i> Now Playing
     </h1>
 
     <p class="lead italic">
-        Movies that are now playing in theatres. 
+        Movies that are now playing in theatres.
     </p>
 
+    <!--
+    Now Playing Movies Grid Section
 
+Displays a responsive grid of movies currently playing in theaters. The section handles three distinct states:
 
-    <div class="row g-3 row-cols-1 row-cols-2 row-cols-lg-4">
-        @for (int i = 1; i <= 20; i++)
+1. Loading State: Shows "Loading now playing movies..." when isLoading is true and data hasn't yet arrived.
+
+2. Error State: Displays "Failed to load now playing movies" when the API call fails or returns null data.
+
+3. Success State: Renders a grid of MovieCard components, one for each movie in the nowPlayingMovies.Results collection.
+
+Layout Details:
+    - Responsive Bootstrap grid with Bootstrap 5 classes:
+      - g-3: Adds consistent gutters between items
+      - row-cols-1: 1 column on mobile devices
+      - row-cols-2: 2 columns on tablets
+      - row-cols-lg-4: 4 columns on desktops and larger screens
+
+Dependencies:
+    - nowPlayingMovies: The collection of movies to display (nullable). Expected structure: object with Results property containing movie items.
+    - isLoading: Boolean flag indicating if the data is currently being fetched from the API.
+    - MovieCard Component: Reusable child component that renders individual movie cards, accepts a Movie parameter.
+    -->
+
+        @if (nowPlayingMovies is null)
         {
-            <div class="col">
-                <MovieCard />
+            <div class="d-flex justify-content-center align-items-center">
+                @if (isLoading)
+                {
+                    <h2 class="text-muted">Loading now playing movies...</h2>
+                }
+                else
+                {
+                    <h2 class="text-muted">
+                        Failed to load now playing movies
+                    </h2>
+                }
             </div>
         }
-         
-     
+        else
+        {
+         <div class="row g-3 row-cols-1 row-cols-2 row-cols-lg-4">
+            @foreach (var movie in nowPlayingMovies.Results)
+            {
+                <div class="col">
+                    <MovieCard Movie="movie" />
+                </div>
+            }
+
+         </div>
+        }
+
     </div>
 
 
-</div>
+
+
+@code {
+    /// <summary>
+    /// Holds the API response containing the list of movies currently playing.
+    /// Initially null until the API call completes.
+    /// </summary>
+    private MovieListResponse? nowPlayingMovies;
+
+
+    /// <summary>
+    /// Tracks the loading state of the component. Set to true initially and false after initialization completes.
+    /// </summary>
+    private bool isLoading = true;
+
+  
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isLoading = true;
+            nowPlayingMovies = await TMDBService.GetNowPlayingMovies();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+}

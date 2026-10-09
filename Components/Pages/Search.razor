@@ -1,0 +1,81 @@
+﻿@page "/search"
+@inject TMDBService TMDBService
+
+<div class="container-xxl py-3">
+    <h1>
+        <i class="bi bi-search text-secondary"></i>
+        Search Movies
+    </h1>
+    <p class="lead italic">
+        Movies matching your search
+    </p>
+    @if (searchResults is null)
+    {
+        <div class="d-flex justify-content-center align-items-center">
+            @if (string.IsNullOrEmpty(Query))
+            {
+                <h2 class="text-muted">
+                    Use the search box at the top of the page to search for movies
+                </h2>
+            }
+            else if (isLoading)
+            {
+                <h2 class="text-muted">Loading popular movies...</h2>
+            }
+            else
+            {
+                <h2 class="text-muted">
+                    Failed to load popular movies for your search "@Query"
+                </h2>
+            }
+        </div>
+    }
+    else
+    {
+        @if (searchResults.TotalResults == 0)
+        {
+            <div class="d-flex justify-content-cetner align-items-center py-5">
+                <h2 class="text-muted">
+                    No movies found for search @Query
+                </h2>
+            </div>
+        }
+        <div class="row g-3 row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-lg-4">
+            @foreach (var movie in searchResults.Results)
+            {
+                <div class="col">
+                    <MovieCard Movie="movie" />
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@code {
+
+    [SupplyParameterFromQuery]
+    public string? Query { get; set; }
+
+    private MovieListResponse? searchResults;
+    private bool isLoading = true;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(Query))
+            {
+                isLoading = true;
+                searchResults = await TMDBService.SearchMovies(Query);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+}

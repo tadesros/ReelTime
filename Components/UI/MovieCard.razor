@@ -1,22 +1,106 @@
-﻿
+﻿<!-- 
+    MovieCard Component
+    
+    Purpose:
+    Displays a movie as a Bootstrap card component with poster image, title, release date, and action buttons.
+    
+    Features:
+    - Responsive card layout using Bootstrap classes
+    - Movie poster image display
+    - Formatted release date (parsing string to DateTime)
+    - "Add Fav" button to add movies to favorites
+    - "More Info" navigation link to detailed movie view
+    
+    Parameters:
+    - Movie [EditorRequired]: A Movie object containing Title, PosterPath, and ReleaseDate
+    
+    Layout:
+    - card-img-top: Movie poster image with alt text
+    - card-body: Contains title and formatted release date
+    - card-footer: Contains "Add Fav" button and "More Info" link button
+    
+    Styling:
+    - Uses Bootstrap card classes (card, card-img-top, card-body, card-footer)
+    - Uses Bootstrap utility classes for spacing and typography (fw-bold, lh-1, fst-italic, d-flex, justify-content-between)
+    - Custom class "movieCard" and "movieCardFooter" for additional styling
+    
+    Date Formatting:
+    - Attempts to parse ReleaseDate as DateTime
+    - If successful, displays in "MMMM dd, yyyy" format (e.g., "January 15, 2024")
+    - If parsing fails, displays "Unknown"
+    
+    Parent Component Usage:
+    <MovieCard Movie="movieObject" />
+-->
+@inject FavoritesService FavoritesService
 
-
+ 
 <div class="movieCard card h-100">
-    <img src="/images/poster.png" alt="Movie Poster" class="card-img-top" />
+    <img src="@Movie.PosterPath" alt="Movie Poster" class="card-img-top" />
     <div class="card-body border border-top">
         <div class="card-title fw-bold lh-1">
-            Movie Title
+            @Movie.Title
         </div>
         <div class="card-text lh-1 fst-italic">
-            Release Date: Dec 01, 2024
+            @{
+                var parsed = DateTime.TryParse(Movie.ReleaseDate, out var releaseDate);
+            }
+            Release Date:@(parsed ? releaseDate.ToString("MMMM dd, yyyy") : "Unknown")
         </div>
     </div>
     <div class="movieCardFooter card-footer d-flex justify-content-between">
-        <button class="btn btn-outline-primary">Add Fav</button>
-        <a href="moviedetail" class="btn btn-primary">More Info</a>
+      
+
+        <!-- The button that toggles favorites -->
+        <button class="btn btn-outline-primary" @onclick="HandleToggleFavorite">
+            @(isFavorite ? "Remove Fav" : "Add Fav")
+        </button>
+
+        <a href="/movie/@Movie.Id" class="btn btn-primary">More Info</a>
     </div>
 </div>
 
+ 
 @code {
+    [Parameter, EditorRequired]
+    public Movie? Movie { get; set; }
 
+    // This callback lets the parent page know something changed (like removing a movie)
+    [Parameter]
+    public EventCallback OnChange { get; set; }
+
+    // Tracks whether the movie is currently a favorite
+    bool isFavorite;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Movie is not null)
+        {
+            // Check if this movie is already in the favorites list
+            isFavorite = await FavoritesService.IsFavorite(Movie.Id);
+        }
+    }
+
+    private async Task HandleToggleFavorite()
+    {
+        if (Movie is null)
+        {
+            return;
+        }
+
+        // If it's already a favorite, remove it; otherwise, add it
+        if (isFavorite)
+        {
+            await FavoritesService.RemoveFavorite(Movie);
+            isFavorite = false;
+        }
+        else
+        {
+            await FavoritesService.AddFavorite(Movie);
+            isFavorite = true;
+        }
+
+        // Notify the parent page or component that something changed
+        await OnChange.InvokeAsync();
+    }
 }

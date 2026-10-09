@@ -17,3 +17,7 @@
     color: var(--bs-navbar-active-color); 
     /* Changes color of dropdown toggle when an item is active */
 }
+
+::deep form .form-control {
+    background-color: var(--cf-theme-800);
+}

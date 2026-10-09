@@ -1,0 +1,17 @@
+﻿@if (Actor is not null)
+{
+    <div class="hstack gap-3 align-items-center swiper-item px-2">
+        <img src="@Actor.ProfilePath"
+             alt="Actor Image"
+             class="actor-img" />
+        <div class="text-center">
+            <div class="fw-bold text-nowrap">@Actor.Name</div>
+            <div class="text-muted text-nowrap">@Actor.Character</div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter, EditorRequired]
+    public Cast? Actor { get; set; }
+}

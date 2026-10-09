@@ -1,0 +1,177 @@
+﻿@page "/movie/{movieId:int}"
+@inject TMDBService TMDBService
+@inject IJSRuntime JS
+
+
+<PageTitle>@(movie?.Title ?? "Movie Details")</PageTitle>
+
+
+<div class="container-fluid p-0">
+    @if (movie is null)
+    {
+        <div class="py-5 justify-content-center align-items-center">
+            @if (isLoading)
+            {
+                <h2 class="text-muted">Loading movie...</h2>
+            }
+            else
+            {
+                <h2 class="text-muted">
+                    The requested movie could not be found
+                </h2>
+            }
+        </div>
+    }
+    else
+    {
+        <div id="movie-details" style="--background: url(@movie.BackdropPath)">
+            <div id="movie-wrapper">
+                <div class="container-xxl py-3">
+                    <div class="row">
+                        <div class="col-12 col-md-4 col-xl-3 text-center text-md-start mb-3">
+                            <img class="img-fluid" id="movie-poster" alt="movie poster" src="@movie.PosterPath" />
+                        </div>
+                        <div class="col-12 col-md-8 col-xl-9">
+                            <h3 class="display-6 fw-bold mb-0">
+                                @movie.Title
+                            </h3>
+                            <div class="lead mb-3">
+                                @movie.Tagline
+                            </div>
+                            <div class="hstack gap-2">
+                                @{
+                                    bool dateParsed = DateTime.TryParse(movie.ReleaseDate, out DateTime releaseDate);
+                                }
+                                @if (dateParsed)
+                                {
+                                    <span>@releaseDate.ToString("MMMM dd, yyyy") | </span>
+                                }
+                                <span>
+                                    @{
+                                        int hours = movie.Runtime / 60;
+                                        int minutes = movie.Runtime % 60;
+                                    }
+                                    @hours hour(s) @minutes minutes
+                                </span>
+                            </div>
+                            <div class="hstack gap-2 my-2">
+                                @foreach (var genre in movie.Genres)
+                                {
+                                    <span class="badge text-bg-primary">@genre.Name</span>
+                                }
+                            </div>
+                            <h5 class="lead fw-bold pt-3 mt-3">Overview</h5>
+                            <p>@movie.Overview</p>
+                            <div>
+                                <span id="movie-rating">
+                                    User Score: @((movie.VoteAverage * 10).ToString("F2"))%
+                                </span>
+                            </div>
+                            @if (!string.IsNullOrEmpty(movieTrailer?.Key))
+                            {
+                                <div id="btn-trailer" class="mt-3">
+                                    <button class="btn btn-outline-warning"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#movie-modal">
+                                        <i class="bi bi-play"></i>Play Trailer
+                                    </button>
+                                </div>
+                            }
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="container-xl py-3">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Top Billed Cast</h3>
+                    <ActorSwiper Actors="actors" />
+                </div>
+            </div>
+        </div>
+    
+    }
+</div>
+
+<div class="modal" tabindex="-1" id="movie-modal">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content modal-background">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modal-title">@(movie?.Title ?? "Movie Trailer")</h5>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close" class="ms-auto">
+                    <i class="bi bi-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="ratio ratio-16x9">
+                    <iframe id="modal-trailer" src="" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-warning ms-auto" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int MovieId { get; set; }
+
+
+    bool isLoading = true;
+    private MovieDetails? movie;
+    private Video? movieTrailer;
+
+    private List<Cast> actors = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        try
+        {
+            isLoading = true;
+            // Fetch the movie details using the newly added TMDBService method
+            movie = await TMDBService.GetMovieById(MovieId);
+            movieTrailer = await TMDBService.GetMovieTrailer(MovieId);   
+
+            var credits = await TMDBService.GetMovieCredits(MovieId);
+            actors = credits.Cast; 
+
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private string? initializedKey;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        var key = movieTrailer?.Key;
+        if (movie is null || key == initializedKey) return;
+        initializedKey = key;
+
+        try
+        {
+            await using var jsModule = await JS.InvokeAsync<IJSObjectReference>(
+                "import", "/Components/Pages/MovieById.razor.js");
+            await jsModule.InvokeVoidAsync("initVideoPlayer",
+                key is null ? string.Empty : $"https://www.youtube-nocookie.com/embed/{key}");
+        }
+        catch (JSDisconnectedException) { }
+        catch (TaskCanceledException) { }
+    }
+
+   
+
+
+}

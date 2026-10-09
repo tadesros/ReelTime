@@ -1,0 +1,35 @@
+﻿#movie-details {
+    min-height: 60vh;
+    background-size: cover;
+    background-position: center;
+    background-image: var(--background);
+    background-repeat: no-repeat;
+    color: #0dcaf0;
+}
+
+#movie-wrapper {
+    background-color: rgba(0,0,0,0.5);
+}
+
+#movie-poster {
+    max-width: 100%;
+    border: 2px solid var(--cf-theme-800);
+}
+
+#movie-rating {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--cf-theme-200);
+}
+
+.modal-background {
+    background-color: var(--cf-theme-900);
+    color: var(--cf-light-color);
+}
+
+.modal-header button {
+    color: var(--bs-warning);
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+}

@@ -1,4 +1,6 @@
-﻿<nav class="navbar navbar-expand-lg navStyle" data-bs-theme="dark">
+﻿@inject NavigationManager Nav
+
+<nav class="navbar navbar-expand-lg navStyle" data-bs-theme="dark">
     <div class="container-xxl">
         <a href="" class="me-3">
             <img src="images/TD_Small_Logo.png" height="40" />
@@ -15,7 +17,7 @@
                         <span>Home</span>
                     </NavLink>
                 </li>
-  
+
                 <li class="nav-item">
                     <NavLink class="nav-link" href="/now-playing" Match="NavLinkMatch.All">
                         <i class="bi bi-film"></i>
@@ -45,8 +47,27 @@
                     </NavLink>
                 </li>
         
+            </ul>
 
-             </ul>
+            <form class="d-flex" role="search">
+                <InputText class="form-control form-control-sm me-2"
+                           type="search"
+                           placeholder="Search Movies.."
+                           aria-label="Search"
+                           name="query"
+                           @bind-Value="Query" />
+                <button class="btn btn-sm btn-primary" type="button" @onclick="HandleSearch">Search</button>
+            </form>
         </div>
     </div>
 </nav>
+
+@code {
+    private string? Query { get; set; }
+
+    private void HandleSearch()
+    {
+        // Navigate to /search, passing a query parameter if Query isn't null or empty.
+          Nav.NavigateTo(string.IsNullOrEmpty(Query) ? "search" : $"search?query={Query}");
+    }
+}
