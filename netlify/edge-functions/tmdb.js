@@ -1,37 +1,31 @@
-export default {
-    // Netlify config for routing
-    path: "/TMDB/*",  // This means any request to /TMDB/ will be handled here
+// netlify/edge-functions/tmdb.js
+// Proxies /tmdb/* from the Blazor app to the TMDB API so the key stays server-side.
+export default async (request) => {
+    const apiKey = Netlify.env.get("API_KEY");
+    const apiUrl = (Netlify.env.get("API_URL") ?? "https://api.themoviedb.org/3/").replace(/\/?$/, "/");
 
-    async handler(req) {
-        const API_KEY = Deno.env.get("API_KEY");    // from Netlify environment vars
-        const API_URL = Deno.env.get("API_URL");    // e.g., https://api.themoviedb.org/3/
-
-        // Ensure trailing slash if missing
-        let baseUrl = API_URL.endsWith("/")
-            ? API_URL
-            : API_URL + "/";
-
-        // Example: the user calls /TMDB/movie/popular
-        // Remove '/TMDB' portion so we can forward to actual TMDB endpoint
-        let newUrl = req.url.replace("/TMDB/", "");
-
-        // Rebuild the full URL, e.g. https://api.themoviedb.org/3/movie/popular
-        let targetUrl = `${baseUrl}${newUrl}`;
-
-        // Add your Bearer or Query Parameter auth if needed
-        // This example might look for the "?" to attach &api_key= or Bearer tokens.
-
-        // Proxy the request with fetch
-        const response = await fetch(targetUrl, {
-            headers: {
-                Authorization: `Bearer ${API_KEY}`
-            },
-            method: req.method
-        });
-
-        return new Response(response.body, {
-            status: response.status,
-            headers: response.headers
-        });
+    if (!apiKey) {
+        return new Response("API_KEY is not set in Netlify environment variables", { status: 500 });
     }
-}
+
+    // e.g. https://mysite.netlify.app/tmdb/movie/now_playing?region=US
+    //  ->  https://api.themoviedb.org/3/movie/now_playing?region=US
+    const url = new URL(request.url);
+    const tmdbPath = url.pathname.replace(/^\/tmdb\//i, "");
+    const target = `${apiUrl}${tmdbPath}${url.search}`;
+
+    const res = await fetch(target, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer ${apiKey}`,
+            Accept: "application/json",
+        },
+    });
+
+    return new Response(res.body, {
+        status: res.status,
+        headers: { "content-type": res.headers.get("content-type") ?? "application/json" },
+    });
+};
+
+export const config = { path: "/tmdb/*" };
