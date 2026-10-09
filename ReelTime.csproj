@@ -21,4 +21,11 @@
     <None Include=".template.config\template.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="release\**" />
+    <None Remove="release\**" />
+    <Compile Remove="release\**" />
+  </ItemGroup>
+  
+  
 </Project>
