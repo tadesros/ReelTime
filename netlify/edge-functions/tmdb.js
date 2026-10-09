@@ -1,4 +1,4 @@
-﻿export default {
+export default {
     // Netlify config for routing
     path: "/TMDB/*",  // This means any request to /TMDB/ will be handled here
 
